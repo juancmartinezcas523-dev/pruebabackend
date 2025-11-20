@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>build</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>install</goal>
+                
+            </goals>
+        </action>
+        <action>
+            <actionName>clean</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>clean</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>rebuild</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>build-with-dependencies</actionName>
+            <reactor>also-make</reactor>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>install</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>test</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>test</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>test.single</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>process-test-classes</goal>
+                <goal>surefire:test</goal>
+            </goals>
+            <properties>
+                <test>${packageClassName}</test>
+            </properties>
+        </action>
+        <action>
+            <actionName>integration-test.single</actionName>
+            <preAction>build-with-dependencies</preAction>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>pre-integration-test</goal>
+                <goal>failsafe:integration-test</goal>
+            </goals>
+            <properties>
+                <test>DummyToSkipUnitTests</test>
+                <failIfNoTests>false</failIfNoTests>
+                <surefire.failIfNoSpecifiedTests>false</surefire.failIfNoSpecifiedTests>
+                <it.test>${packageClassName}</it.test>
+            </properties>
+        </action>
+        <action>
+            <actionName>run</actionName>
+            <packagings>
+                <packaging>war</packaging>
+                <packaging>ear</packaging>
+                <packaging>ejb</packaging>
+            </packagings>
+            <goals>
+                <goal>package</goal>
+            </goals>
+            <properties>
+                <netbeans.deploy>true</netbeans.deploy>
+            </properties>
+        </action>
+        <action>
+            <actionName>run.single.main</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:3.1.0:exec</goal>
+            </goals>
+            <properties>
+                <exec.vmArgs></exec.vmArgs>
+                <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
+                <exec.executable>java</exec.executable>
+                <exec.mainClass>${packageClassName}</exec.mainClass>
+                <exec.classpathScope>${classPathScope}</exec.classpathScope>
+                
+            </properties>
+        </action>
+        <action>
+            <actionName>run.single.deploy</actionName>
+            <packagings>
+                <packaging>war</packaging>
+            </packagings>
+            <goals>
+                <goal>package</goal>
+                
+            </goals>
+            <properties>
+                <netbeans.deploy>true</netbeans.deploy>
+                <netbeans.deploy.clientUrlPart>${webpagePath}</netbeans.deploy.clientUrlPart>
+                
+                
+                
+                
+            </properties>
+        </action>
+        <action>
+            <actionName>debug</actionName>
+            <packagings>
+                <packaging>war</packaging>
+                <packaging>ear</packaging>
+                <packaging>ejb</packaging>
+            </packagings>
+            <goals>
+                <goal>package</goal>
+            </goals>
+            <properties>
+                <netbeans.deploy.debugmode>true</netbeans.deploy.debugmode>
+                <netbeans.deploy>true</netbeans.deploy>
+            </properties>
+        </action>
+        <action>
+            <actionName>debug.single.main</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>process-test-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:3.1.0:exec</goal>
+            </goals>
+            <properties>
+                <exec.vmArgs>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
+                <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
+                <exec.executable>java</exec.executable>
+                <exec.mainClass>${packageClassName}</exec.mainClass>
+                <exec.classpathScope>${classPathScope}</exec.classpathScope>
+                <jpda.listen>true</jpda.listen>
+            </properties>
+        </action>
+        <action>
+            <actionName>debug.single.deploy</actionName>
+            <packagings>
+                <packaging>war</packaging>
+            </packagings>
+            <goals>
+                <goal>package</goal>
+            </goals>
+            <properties>
+                <netbeans.deploy>true</netbeans.deploy>
+                <netbeans.deploy.debugmode>true</netbeans.deploy.debugmode>
+                <netbeans.deploy.clientUrlPart>${webpagePath}</netbeans.deploy.clientUrlPart>
+            </properties>
+        </action>
+        <action>
+            <actionName>debug.test.single</actionName>
+            <packagings>
+                <packaging>*</packaging>
+                
+                
+            </packagings>
+            <goals>
+                <goal>process-test-classes</goal>
+                <goal>surefire:test</goal>
+            </goals>
+            <properties>
+                <test>${packageClassName}</test>
+                <forkMode>once</forkMode>
+                <maven.surefire.debug>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</maven.surefire.debug>
+                <jpda.listen>true</jpda.listen>
+                
+                
+            </properties>
+        </action>
+        <action>
+            <actionName>debug.integration-test.single</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>pre-integration-test</goal>
+                <goal>failsafe:integration-test</goal>
+            </goals>
+            <properties>
+                <test>DummyToSkipUnitTests</test>
+                <failIfNoTests>false</failIfNoTests>
+                <surefire.failIfNoSpecifiedTests>false</surefire.failIfNoSpecifiedTests>
+                <it.test>${packageClassName}</it.test>
+                <forkMode>once</forkMode>
+                <maven.failsafe.debug>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</maven.failsafe.debug>
+                
+                
+                
+                
+                
+                <jpda.listen>true</jpda.listen>
+            </properties>
+        </action>
+        <action>
+            <actionName>profile</actionName>
+            <packagings>
+                <packaging>ejb</packaging>
+                <packaging>ear</packaging>
+                <packaging>war</packaging>
+            </packagings>
+            <goals>
+                <goal>package</goal>
+            </goals>
+            <properties>
+                
+                <netbeans.deploy.profilemode>true</netbeans.deploy.profilemode>
+                
+                <netbeans.deploy>true</netbeans.deploy>
+            </properties>
+        </action>
+        <action>
+            <actionName>profile.single.main</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:3.1.0:exec</goal>
+            </goals>
+            <properties>
+                <exec.vmArgs></exec.vmArgs>
+                <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
+                <exec.mainClass>${packageClassName}</exec.mainClass>
+                <exec.executable>java</exec.executable>
+                <exec.classpathScope>${classPathScope}</exec.classpathScope>
+                
+                
+                
+                
+            </properties>
+        </action>
+        <action>
+            <actionName>profile.single.deploy</actionName>
+            <packagings>
+                <packaging>war</packaging>
+            </packagings>
+            <goals>
+                <goal>package</goal>
+                
+            </goals>
+            <properties>
+                <netbeans.deploy>true</netbeans.deploy>
+                <netbeans.deploy.clientUrlPart>${webpagePath}</netbeans.deploy.clientUrlPart>
+                <netbeans.deploy.profilemode>true</netbeans.deploy.profilemode>
+                
+                
+                
+                
+                
+                
+                
+            </properties>
+        </action>
+        <action>
+            <actionName>javadoc</actionName>
+            <packagings>
+                <packaging>*</packaging>
+                
+                
+            </packagings>
+            <goals>
+                <goal>generate-sources</goal>
+                <goal>javadoc:javadoc</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>cobertura</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>cobertura:clean</goal>
+                <goal>cobertura:cobertura</goal>
+            </goals>
+            <properties>
+                <skipTests>false</skipTests>
+                <cobertura.report.format>xml</cobertura.report.format>
+                
+                
+                
+                
+                
+            </properties>
+        </action>
+        <action>
+            <actionName>native-build</actionName>
+            <displayName>Build with Native Image</displayName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>native:compile</goal>
+            </goals>
+            <activatedProfiles>
+                <activatedProfile>native</activatedProfile>
+            </activatedProfiles>
+        </action>
+        <action>
+            <actionName>debug.fix</actionName>
+            <displayName>Fix &amp; Continue Debugging</displayName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>compile</goal>
+                
+            </goals>
+            <properties>
+                <jpda.stopclass>${packageClassName}</jpda.stopclass>
+            </properties>
+        </action>
+        <action>
+            <actionName>jacoco</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>clean</goal>
+                <goal>verify</goal>
+            </goals>
+            <properties>
+                <skipTests>false</skipTests>
+                
+            </properties>
+        </action>
+        <action>
+            <actionName>profile.test.single</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>process-test-classes</goal>
+                <goal>surefire:test</goal>
+            </goals>
+            <properties>
+                <test>${packageClassName}</test>
+                <forkMode>once</forkMode>
+                <maven.surefire.debug>${exec.vmArgs}</maven.surefire.debug>
+                <exec.vmArgs></exec.vmArgs>
+                <exec.args></exec.args>
+            </properties>
+        </action>
+        
+        
+        
+    </actions>
