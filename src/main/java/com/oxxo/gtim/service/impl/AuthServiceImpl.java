@@ -196,7 +196,7 @@ public class AuthServiceImpl implements AuthService {
             
             trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
             trustManagerFactory.init(keyStore);
-            sslContext = SSLContext.getInstance("TLS");
+            sslContext = SSLContext.getInstance("TLSv1.2");
             sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
         } catch (Exception ex) {
             System.out.println("Error al agregar certificado: " + ex.getMessage() + " " + ex.getCause());
