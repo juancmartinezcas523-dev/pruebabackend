@@ -7,6 +7,7 @@ import com.oxxo.gtim.dto.accessControl.Menus;
 import com.oxxo.gtim.dto.accessControl.UserInformation;
 import com.oxxo.gtim.dto.request.AuthRequest;
 import com.oxxo.gtim.dto.response.AuthResponse;
+import com.oxxo.gtim.dto.response.AuthResponseFront;
 import com.oxxo.gtim.service.AuthService;
 import com.oxxo.gtim.utils.JwtUtils;
 import java.io.BufferedReader;
@@ -61,8 +62,9 @@ public class AuthServiceImpl implements AuthService {
     }
     
     @Override
-    public AuthResponse authenticate(AuthRequest request) {
+    public AuthResponseFront authenticate(AuthRequest request) {
         AuthResponse response = new AuthResponse();
+        AuthResponseFront responseFront = new AuthResponseFront();
         try {
             validateAuthRequest(request);
             
@@ -95,6 +97,13 @@ public class AuthServiceImpl implements AuthService {
                 
                 response.setToken(token);
                 
+                responseFront.setUserName(response.getUserName());
+                responseFront.setAppName(response.getName());
+                responseFront.setShortAppName(response.getShortName());
+                responseFront.setVersion(response.getVersion());
+                responseFront.setProfileShortName(response.getProfileShortName());
+                responseFront.setToken(response.getToken());
+                
             } else {
                 System.out.println("Parametros Invalidos");
                 throw new RuntimeException("PArametros Invalidos");
@@ -103,7 +112,7 @@ public class AuthServiceImpl implements AuthService {
         } catch (Exception ex) {
         }
         
-        return response;
+        return responseFront;
     }
     
     private void validateAuthRequest(AuthRequest request) {

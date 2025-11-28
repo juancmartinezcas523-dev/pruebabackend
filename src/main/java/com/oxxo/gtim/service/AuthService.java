@@ -1,9 +1,9 @@
 package com.oxxo.gtim.service;
 
 import com.oxxo.gtim.dto.request.AuthRequest;
-import com.oxxo.gtim.dto.response.AuthResponse;
+import com.oxxo.gtim.dto.response.AuthResponseFront;
 
 public interface AuthService {
 
-    public AuthResponse authenticate(AuthRequest request);
+    public AuthResponseFront authenticate(AuthRequest request);
 }
